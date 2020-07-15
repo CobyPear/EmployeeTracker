@@ -23,11 +23,23 @@ class ORM {
   }
 
 
+  // returns table with all employess and all associated columns
   viewAllEmployee() {
-      const queryString = `SELECT * FROM employee`
+      const queryString = `SELECT * FROM employee;`
       return this.connection.query(queryString);
   }
 
-  view
+//   viewAllEmployeeByDepartment() {
+//       const queryString = `SELECT`
+//   }
+
+  // allows the use to add an employee
+  addEmployee(firstName, lastName, role_id, manager_id) {
+      const queryString = `INSERT INTO employee (firstName, lastName, role_id, manager_id) VALUE (?, ?, ?, ?);`
+      
+      return this.connection.query(queryString, [firstName, lastName, role_id, manager_id])
+  }
 
 }
+
+module.exports = new ORM(connection)

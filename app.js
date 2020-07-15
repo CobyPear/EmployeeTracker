@@ -23,7 +23,14 @@
     So that I can organize and plan my business
 
  */
+const cTable = require("console.table");
+const orm = require("./config/orm");
+const connection = require("./config/connection");
 
+orm.viewAllEmployee()
+.then(results=> console.table(results))
+.then(connection.end())
+.catch(err => console.error(err));
 
  // inquierer prompts
     // what would you like to do? (list answer)
@@ -34,6 +41,6 @@
         add employee
         update employee role
         update employee manager
-        
+
         
          */
