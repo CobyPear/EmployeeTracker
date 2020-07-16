@@ -40,12 +40,18 @@ class ORM {
 
     // allows the use to add an employee
     addEmployee(firstName, lastName, role_id, manager_id) {
-        const queryString = `INSERT INTO employee (firstName, lastName, role_id, manager_id) VALUE (?, ?, ?, ?);`
+        const queryString = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUE (?,? ,?,?);`
 
-        return this.connection.query(queryString, [firstName, lastName, role_id, manager_id])
+        return this.connection.query(queryString, [firstName, lastName, role_id, manager_id]);
     }
-
     
+    // allows the user to view all departments
+    viewAllDepartments() {
+        
+        const queryString = `SELECT * FROM department;`
+
+        return this.connection.query(queryString);
+    }
 
 }
 

@@ -28,43 +28,68 @@ const orm = require("./config/orm");
 const connection = require("./config/connection");
 const inquirer = require("inquirer");
 const questions = require("./assets/questions");
+// const { addEmployee } = require("./config/orm");
 
 
 
-inquirer.prompt(questions.main)
-.then(answer => {
-    console.log(answer)
+const init = () => {
 
-    var operation;
+    return inquirer.prompt(questions.main)
+        .then(async ({ main }) => {
 
-    switch (answer) {
+            switch (main) {
+                case "View all employees":
+                    await renderAllEmployees(main);
+                    break;
+                case "Add employee":
+                    await addEmployee()
+                    // .then(re)
+                    break;
 
-        case "View all employees":
-            return orm.viewAllEmploye(answer);
-            break;
-        case "Add employee":
-            operation = inquirer.prompt(questions.addEmployee);
-    
-        default: console.log("bleh")
-            break;
-    }
-    console.log("operation", operation)
-    return operation;
-    // return orm.viewAllEmployee(answer);
-})
-// .then(results => console.table(results))
-// .then(connection.end())
-.catch(err => console.error(err));
+                default: console.log("bleh")
+                    break;
+            }
+            // console.log("operation", operation)
+            // return operation;
+        })
+        // .then()
+        // .then(results => console.table(results))
+        // .then(connection.end())
+        // .then(result => orm.viewAllEmployee(result))
+        .catch(err => err);
+};
 
- // inquierer prompts
-    // what would you like to do? (list answer)
-        /*
-        view all employees - select needed
-        view all employees by department- bonus
-        view all employees by manager -bonus
-        add employee
-        update employee role
-        update employee manager
 
-        
-         */
+function renderAllEmployees(answer) {
+    return orm.viewAllEmployee()
+    .then(result => console.table(result))
+    .catch(err => err)
+    .then(init);
+}
+
+// asks the add employee prompts to insert a new employee into the database
+function addEmployee() {
+    inquirer
+        .prompt(questions.addEmployee)
+        .then(result => orm.addEmployee(result))
+        // .then(init())
+        .catch(err => err);
+
+};
+
+
+
+// inquierer prompts
+// what would you like to do? (list answer)
+/*
+view all employees - select needed
+view all employees by department- bonus
+view all employees by manager -bonus
+add employee
+update employee role
+update employee manager
+
+ 
+ */
+
+init();

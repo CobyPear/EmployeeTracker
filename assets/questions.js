@@ -1,5 +1,6 @@
 const connection = require("../config/connection");
 const inquirer = require("inquirer");
+const orm = require("../config/orm");
 
 
 let namesArr = [];
@@ -22,7 +23,7 @@ module.exports = questions = {
             "Add employee",
             "Add department",
             "Add role",
-            "Update employee role"
+            "Update employee"
 
         ]
     },
@@ -30,28 +31,28 @@ module.exports = questions = {
     addEmployee: [
         {
             type: "input",
-            name: "firstName",
+            name: "first_name",
             message: "What is the employee's first name?"
         },
         {
             type: "input",
-            name: "lastName",
+            name: "last_name",
             message: "What is the employee's last name?"
         },
         {
             type: "list",
-            name: "role",
+            name: "role_id",
             message: "What is the employee's role?",
             choices: rolesArr
 
         },
         {
             type: "list",
-            name: "manager",
+            name: "manager_id",
             message: "Who is the employee's manager?",
             choices: namesArr
 
-        },
+        }
 
     ],
 
@@ -60,15 +61,14 @@ module.exports = questions = {
 
 // get a list of roles
 function getRoles() {
-     connection.query(`SELECT title FROM role;`)
+     connection.query(`SELECT id, title FROM role;`)
         .then(result => {
 
             for (let i = 0; i < result.length; i++) {
-                rolesArr.push(result[i].title);
+                rolesArr.push(result[i].id + " " + result[i].title);
             }
             rolesArr.push(new inquirer.Separator());
             // return rolesArr;
-
 
         })
         .catch(err => err);
@@ -91,7 +91,7 @@ function getEmployeeNames() {
 
 // test
 
-// inquirer.prompt(questions.addEmployee)
+// inquirer.prompt(questions.main)
 //     .then(response => {
 //         console.log(response)
 //     })
