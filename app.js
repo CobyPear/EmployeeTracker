@@ -26,10 +26,17 @@
 const cTable = require("console.table");
 const orm = require("./config/orm");
 const connection = require("./config/connection");
+const inquirer = require("inquirer");
+const questions = require("./assets/questions");
+// orm.viewAllEmployee()
+// .then(results=> console.table(results))
+// .then(connection.end())
+// .catch(err => console.error(err));
 
-orm.viewAllEmployee()
+inquirer.prompt(questions.root)
+.then(results=>orm.addEmployee(results))
 .then(results=> console.table(results))
-.then(connection.end())
+// .then(connection.end())
 .catch(err => console.error(err));
 
  // inquierer prompts

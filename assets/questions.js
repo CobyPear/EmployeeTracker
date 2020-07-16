@@ -1,0 +1,89 @@
+const connection = require("../config/connection");
+const inquirer = require("inquirer");
+
+
+let namesArr = [];
+let rolesArr = [];
+
+
+getEmployeeNames();
+getRoles();
+
+
+module.exports = questions = {
+    root: {
+        type: "list",
+        name: "root",
+        message: "What would you like to do?",
+        choices: [
+            "View all employees",
+            "Add employee"
+        ]
+    },
+
+    addEmployee: [
+        {
+            type: "input",
+            name: "firstName",
+            message: "What is the employee's first name?"
+        },
+        {
+            type: "input",
+            name: "lastName",
+            message: "What is the employee's last name?"
+        },
+        {
+            type: "list",
+            name: "role",
+            message: "What is the employee's role?",
+            choices: rolesArr
+
+        },
+        {
+            type: "list",
+            name: "manager",
+            message: "Who is the employee's manager?",
+            choices: namesArr
+
+        },
+
+    ]
+
+}
+
+function getRoles() {
+     connection.query(`SELECT title FROM role;`)
+        .then(result => {
+
+            for (let i = 0; i < result.length; i++) {
+                rolesArr.push(result[i].title);
+            }
+            rolesArr.push(new inquirer.Separator());
+            // return rolesArr;
+
+
+        })
+        .catch(err => err);
+};
+
+function getEmployeeNames() {
+    connection.query(`SELECT first_name, last_name FROM employee;`)
+        .then(result => {
+
+            for (let i = 0; i < result.length; i++) {
+                namesArr.push(result[i].first_name + " " + result[i].last_name);
+            }
+            namesArr.push(new inquirer.Separator());
+            //    return namesArr;
+
+        })
+        .catch(err => err);
+};
+
+
+inquirer.prompt(questions.addEmployee)
+    .then(response => {
+        console.log(response)
+    })
+    .then(connection.end())
+    .catch(err => err);
