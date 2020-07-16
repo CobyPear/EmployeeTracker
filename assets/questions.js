@@ -11,13 +11,19 @@ getRoles();
 
 
 module.exports = questions = {
-    root: {
+    main: {
         type: "list",
-        name: "root",
+        name: "main",
         message: "What would you like to do?",
         choices: [
             "View all employees",
-            "Add employee"
+            "View all departments",
+            "View all roles",
+            "Add employee",
+            "Add department",
+            "Add role",
+            "Update employee role"
+
         ]
     },
 
@@ -47,10 +53,12 @@ module.exports = questions = {
 
         },
 
-    ]
+    ],
+
 
 }
 
+// get a list of roles
 function getRoles() {
      connection.query(`SELECT title FROM role;`)
         .then(result => {
@@ -66,6 +74,7 @@ function getRoles() {
         .catch(err => err);
 };
 
+// get a list of the employee names
 function getEmployeeNames() {
     connection.query(`SELECT first_name, last_name FROM employee;`)
         .then(result => {
@@ -80,10 +89,11 @@ function getEmployeeNames() {
         .catch(err => err);
 };
 
+// test
 
-inquirer.prompt(questions.addEmployee)
-    .then(response => {
-        console.log(response)
-    })
-    .then(connection.end())
-    .catch(err => err);
+// inquirer.prompt(questions.addEmployee)
+//     .then(response => {
+//         console.log(response)
+//     })
+//     .then(connection.end())
+//     .catch(err => err);

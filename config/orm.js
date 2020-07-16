@@ -37,9 +37,6 @@ class ORM {
         return this.connection.query(queryString);
     }
 
-    //   viewAllEmployeeByDepartment() {
-    //       const queryString = `SELECT`
-    //   }
 
     // allows the use to add an employee
     addEmployee(firstName, lastName, role_id, manager_id) {
@@ -47,6 +44,8 @@ class ORM {
 
         return this.connection.query(queryString, [firstName, lastName, role_id, manager_id])
     }
+
+    
 
 }
 

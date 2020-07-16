@@ -28,14 +28,31 @@ const orm = require("./config/orm");
 const connection = require("./config/connection");
 const inquirer = require("inquirer");
 const questions = require("./assets/questions");
-// orm.viewAllEmployee()
-// .then(results=> console.table(results))
-// .then(connection.end())
-// .catch(err => console.error(err));
 
-inquirer.prompt(questions.root)
-.then(results=>orm.addEmployee(results))
-.then(results=> console.table(results))
+
+
+inquirer.prompt(questions.main)
+.then(answer => {
+    console.log(answer)
+
+    var operation;
+
+    switch (answer) {
+
+        case "View all employees":
+            return orm.viewAllEmploye(answer);
+            break;
+        case "Add employee":
+            operation = inquirer.prompt(questions.addEmployee);
+    
+        default: console.log("bleh")
+            break;
+    }
+    console.log("operation", operation)
+    return operation;
+    // return orm.viewAllEmployee(answer);
+})
+// .then(results => console.table(results))
 // .then(connection.end())
 .catch(err => console.error(err));
 
