@@ -56,16 +56,31 @@ module.exports = questions = {
 
     ],
 
+    addDepartment: {
+
+            type: "input",
+            name: "name",
+            message: "What is the name of the new department?"
+        },
+
+        addRole: {
+            type: "input",
+            name: "name",
+            message: "What is the name of the new role?"
+        }
+
+
+
 
 }
 
 // get a list of roles
 function getRoles() {
-     connection.query(`SELECT id, title FROM role;`)
+     connection.query(`SELECT title FROM role;`)
         .then(result => {
 
             for (let i = 0; i < result.length; i++) {
-                rolesArr.push(result[i].id + " " + result[i].title);
+                rolesArr.push(result[i].title);
             }
             rolesArr.push(new inquirer.Separator());
             // return rolesArr;
