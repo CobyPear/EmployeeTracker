@@ -28,6 +28,7 @@ const orm = require("./config/orm");
 const connection = require("./config/connection");
 const inquirer = require("inquirer");
 const questions = require("./assets/questions");
+// const { addDepartment } = require("./config/orm");
 // const { managerSwitcher } = require("./config/orm");
 // const { addEmployee } = require("./config/orm");
 
@@ -42,15 +43,19 @@ const init = () => {
                 case "View all employees":
                     await renderAllEmployees();
                     break;
-                case "Add employee":
-                    await addEmployee(main);
-                    break;
                 case "View all departments":
                     await renderAllDepartments();
                     break;
                 case "View all roles":
                     await renderAllRoles();
                     break;
+                case "Add employee":
+                    await addEmployee(main);
+                    break;
+                case "Add department":
+                    await addDepartment(main)
+                    break;
+
 
                 default: console.log("bleh");
                     break;
@@ -76,17 +81,17 @@ const renderAllEmployees = () => {
 // renders all departments to the console
 const renderAllDepartments = () => {
     return orm.viewAllDepartments()
-    .then(result => console.table(result))
-    .catch(err => err)
-    .then(init);
+        .then(result => console.table(result))
+        .catch(err => err)
+        .then(init);
 };
 
 // renders all roles to the console
 const renderAllRoles = (answer) => {
     return orm.viewAllRoles()
-    .then(result => console.table(result))
-    .catch(err => err)
-    .then(init);
+        .then(result => console.table(result))
+        .catch(err => err)
+        .then(init);
 };
 
 // asks the add employee prompts to insert a new employee into the database
@@ -103,6 +108,16 @@ const addEmployee = (answer) => {
         .catch(err => err)
         .then(init);
 
+};
+
+const addDepartment = (answer) => {
+    inquirer
+        .prompt(questions.addDepartment)
+        .then( async result => {
+            await orm.addDepartment(result.name)
+        })
+        .catch(err => err)
+        .then(init);
 };
 
 // takes in the role name, outputs the role's id
@@ -122,8 +137,8 @@ const managerSwitch = (manager) => {
 // takes in the department name, outputs the department id
 const deptSwitch = (dept) => {
     return orm.deptSwitch(dept)
-    .then(res => res[0].id)
-    .catch(err => err);
+        .then(res => res[0].id)
+        .catch(err => err);
 };
 
 init();

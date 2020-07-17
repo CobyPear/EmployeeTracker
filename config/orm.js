@@ -79,7 +79,7 @@ class ORM {
 
     // allows the user to add a department
     addDepartment(name) {
-        const queryString = `INSERT INTO department (name) VALUE ?;`
+        const queryString = `INSERT INTO department (name) VALUE (?);`
 
         return this.connection.query(queryString, [name]);
     };
