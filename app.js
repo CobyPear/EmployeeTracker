@@ -103,7 +103,6 @@ const addEmployee = () => {
         })
         .catch(err => console.err(err))
         .then(init);
-
 };
 
 const addDepartment = () => {

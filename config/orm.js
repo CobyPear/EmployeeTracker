@@ -47,7 +47,6 @@ class ORM {
 
     };
 
-
     // returns table with all employess and all associated columns
     viewAllEmployee() {
 
@@ -90,9 +89,6 @@ class ORM {
 
         return this.connection.query(queryString, [title, salary, departmentId]);
     };
-
-
-
 
 };
 
