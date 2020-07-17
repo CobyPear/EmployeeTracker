@@ -7,14 +7,9 @@ let namesArr = [];
 let rolesArr = [];
 let deptArr = [];
 
-
-getEmployeeNames();
-getRoles();
-getDepartmentNames();
-
-
 module.exports = questions = {
     main: {
+
         type: "list",
         name: "main",
         message: "What would you like to do?",
@@ -31,6 +26,7 @@ module.exports = questions = {
     },
 
     addEmployee: [
+
         {
             type: "input",
             name: "first_name",
@@ -75,7 +71,7 @@ module.exports = questions = {
         {
             type: "input",
             name: "salary",
-            message: "What is the salary of this role?"
+            message: "What is the salary of this role (no commas please)?"
         },
         {
             type: "list",
@@ -83,7 +79,9 @@ module.exports = questions = {
             message: "To which department does this role belong?",
             choices: deptArr
         }
-    ]
+    ],
+
+    //TODO: update employee roles, BONUS: view employees by manager, update employee manager, delete departments, roles, and employees, combined salary
 
 
 
@@ -91,7 +89,7 @@ module.exports = questions = {
 }
 
 // get a list of roles
-function getRoles () {
+function getRoles() {
     connection.query(`SELECT title FROM role;`)
         .then(result => {
 
@@ -99,14 +97,13 @@ function getRoles () {
                 rolesArr.push(result[i].title);
             }
             rolesArr.push(new inquirer.Separator());
-            // return rolesArr;
 
         })
-        .catch(err => err);
+        .catch(err => console.error(err));
 };
 
 // get a list of the employee names
-function getEmployeeNames () {
+function getEmployeeNames() {
     connection.query(`SELECT first_name, last_name FROM employee;`)
         .then(result => {
 
@@ -114,23 +111,27 @@ function getEmployeeNames () {
                 namesArr.push(result[i].first_name + " " + result[i].last_name);
             }
             namesArr.push(new inquirer.Separator());
-            //    return namesArr;
 
         })
-        .catch(err => err);
+        .catch(err => console.error(err));
 };
 
-function getDepartmentNames () {
+function getDepartmentNames() {
     connection.query(`SELECT name FROM department;`)
-    .then(result => {
+        .then(result => {
 
-        for (let i = 0; i < result.length; i++) {
-            deptArr.push(result[i].name);
-        }
-        deptArr.push(new inquirer.Separator());
-    });
-
+            for (let i = 0; i < result.length; i++) {
+                deptArr.push(result[i].name);
+            }
+            deptArr.push(new inquirer.Separator());
+        })
+        .catch(err => console.error(err));
 };
+
+getDepartmentNames();
+getEmployeeNames();
+getRoles();
+
 
 // test
 

@@ -50,31 +50,28 @@ const init = () => {
                     await renderAllRoles();
                     break;
                 case "Add employee":
-                    await addEmployee(main);
+                    await addEmployee();
                     break;
                 case "Add department":
-                    await addDepartment(main)
+                    await addDepartment();
+                    break;
+                case "Add role":
+                    await addRole();
                     break;
 
 
                 default: console.log("bleh");
                     break;
-            }
-            // console.log("operation", operation)
-            // return operation;
+            };
         })
-        // .then()
-        // .then(results => console.table(results))
-        // .then(connection.end())
-        // .then(result => orm.viewAllEmployee(result))
-        .catch(err => err);
+        .catch(err => console.error(err));
 };
 
 // renders all employees to the console
 const renderAllEmployees = () => {
     return orm.viewAllEmployee()
         .then(result => console.table(result))
-        .catch(err => err)
+        .catch(err => console.error(err))
         .then(init);
 };
 
@@ -82,41 +79,49 @@ const renderAllEmployees = () => {
 const renderAllDepartments = () => {
     return orm.viewAllDepartments()
         .then(result => console.table(result))
-        .catch(err => err)
+        .catch(err => console.error(err))
         .then(init);
 };
 
 // renders all roles to the console
-const renderAllRoles = (answer) => {
+const renderAllRoles = () => {
     return orm.viewAllRoles()
         .then(result => console.table(result))
-        .catch(err => err)
+        .catch(err => console.error(err))
         .then(init);
 };
 
 // asks the add employee prompts to insert a new employee into the database
-const addEmployee = (answer) => {
+const addEmployee = () => {
     inquirer
         .prompt(questions.addEmployee)
         .then(async result => {
-            let managerId = result.manager_id.split(" ")[0];
             let role = await roleSwitch(result.role_id)
-            let manager = await managerSwitch(managerId)
-            // console.log(result)    
-            orm.addEmployee(result.first_name, result.last_name, role, manager)
+            let manager = await managerSwitch(result.manager_id.split(" ")[0])
+
+            orm.addEmployee(result.first_name, result.last_name, role, manager);
         })
-        .catch(err => err)
+        .catch(err => console.err(err))
         .then(init);
 
 };
 
-const addDepartment = (answer) => {
+const addDepartment = () => {
     inquirer
         .prompt(questions.addDepartment)
-        .then( async result => {
-            await orm.addDepartment(result.name)
-        })
+        .then(async result => await orm.addDepartment(result.name))
         .catch(err => err)
+        .then(init);
+};
+
+const addRole = () => {
+    inquirer
+        .prompt(questions.addRole)
+        .then(async result => {
+            let dept = await deptSwitch(result.department_id)
+            orm.addRole(result.title, result.salary, dept)
+        })
+        .catch(err => console.error(err))
         .then(init);
 };
 
@@ -124,21 +129,21 @@ const addDepartment = (answer) => {
 const roleSwitch = (role) => {
     return orm.roleSwitcher(role)
         .then(res => res[0].id)
-        .catch(err => err);
+        .catch(err => console.error(err));
 };
 
 // takes in the manager name, outputs the manager's id
 const managerSwitch = (manager) => {
     return orm.managerSwitcher(manager)
         .then(res => res[0].id)
-        .catch(err => err);
+        .catch(err => console.error(err));
 };
 
 // takes in the department name, outputs the department id
 const deptSwitch = (dept) => {
-    return orm.deptSwitch(dept)
+    return orm.deptSwitcher(dept)
         .then(res => res[0].id)
-        .catch(err => err);
+        .catch(err => console.error(err));
 };
 
 init();

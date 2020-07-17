@@ -40,8 +40,8 @@ class ORM {
     };
 
     // this method takes in a department name and returns it's id
-    managerSwitcher(name) {
-        const queryString = `SELECT id FROM department WHERE name= ?`
+    deptSwitcher(name) {
+        const queryString = `SELECT id FROM department WHERE name = ?`
 
         return this.connection.query(queryString, [name]);
 
@@ -51,7 +51,7 @@ class ORM {
     // returns table with all employess and all associated columns
     viewAllEmployee() {
 
-        const queryString = `SELECT employee.id, first_name, last_name, department.name, role.title, role_id, salary 
+        const queryString = `SELECT employee.id, first_name, last_name, department.name, role.title, salary 
         FROM employee 
         INNER JOIN role on employee.role_id = role.id 
         INNER JOIN department on role.department_id = department.id;`
@@ -86,10 +86,10 @@ class ORM {
 
         // allows the user to add a department
     addRole(title, salary, departmentId) {
-        const queryString = `INSERT INTO role (title) VALUE (?, ?, ?);`
+        const queryString = `INSERT INTO role (title, salary, department_id) VALUE (?, ?, ?);`
 
         return this.connection.query(queryString, [title, salary, departmentId]);
-    }
+    };
 
 
 
@@ -104,6 +104,18 @@ module.exports = new ORM(connection)
 
 // test
 const test = new ORM(connection);
+
+// test.deptSwitcher("Crew")
+// .then(res => {
+    // res[0].id -- what we need to return from role switcher function
+//     console.log(res[0].id)})
+// .then(connection.end())
+// .catch(err => err)
+
+// test.addRole("Pirate", 20000, 3)
+// .then(results => console.log(results))
+// .then(connection.end())
+// .catch(err => err)
 
 // test.roleSwitcher("CEO")
 // .then(res => {
