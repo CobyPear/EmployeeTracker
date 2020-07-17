@@ -5,10 +5,12 @@ const orm = require("../config/orm");
 
 let namesArr = [];
 let rolesArr = [];
+let deptArr = [];
 
 
 getEmployeeNames();
 getRoles();
+getDepartmentNames();
 
 
 module.exports = questions = {
@@ -58,16 +60,30 @@ module.exports = questions = {
 
     addDepartment: {
 
-            type: "input",
-            name: "name",
-            message: "What is the name of the new department?"
-        },
+        type: "input",
+        name: "name",
+        message: "What is the name of the new department?"
+    },
 
-        addRole: {
+    addRole: [
+
+        {
             type: "input",
-            name: "name",
-            message: "What is the name of the new role?"
+            name: "title",
+            message: "What is the title of the new role?"
+        },
+        {
+            type: "input",
+            name: "salary",
+            message: "What is the salary of this role?"
+        },
+        {
+            type: "list",
+            name: "department_id",
+            message: "To which department does this role belong?",
+            choices: deptArr
         }
+    ]
 
 
 
@@ -75,8 +91,8 @@ module.exports = questions = {
 }
 
 // get a list of roles
-function getRoles() {
-     connection.query(`SELECT title FROM role;`)
+function getRoles () {
+    connection.query(`SELECT title FROM role;`)
         .then(result => {
 
             for (let i = 0; i < result.length; i++) {
@@ -90,7 +106,7 @@ function getRoles() {
 };
 
 // get a list of the employee names
-function getEmployeeNames() {
+function getEmployeeNames () {
     connection.query(`SELECT first_name, last_name FROM employee;`)
         .then(result => {
 
@@ -102,6 +118,18 @@ function getEmployeeNames() {
 
         })
         .catch(err => err);
+};
+
+function getDepartmentNames () {
+    connection.query(`SELECT name FROM department;`)
+    .then(result => {
+
+        for (let i = 0; i < result.length; i++) {
+            deptArr.push(result[i].name);
+        }
+        deptArr.push(new inquirer.Separator());
+    });
+
 };
 
 // test

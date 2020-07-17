@@ -39,13 +39,17 @@ class ORM {
 
     };
 
+    // this method takes in a department name and returns it's id
+    managerSwitcher(name) {
+        const queryString = `SELECT id FROM department WHERE name= ?`
+
+        return this.connection.query(queryString, [name]);
+
+    };
+
 
     // returns table with all employess and all associated columns
     viewAllEmployee() {
-        /*SELECT first_name, last_name, department.name, role.title, salary 
-        FROM employee 
-        INNER JOIN role on employee.role_id = role.id
-        INNER JOIN department on role.department_id = department.id */
 
         const queryString = `SELECT employee.id, first_name, last_name, department.name, role.title, role_id, salary 
         FROM employee 
@@ -62,7 +66,7 @@ class ORM {
 
     // allows the user to view all roles
     viewAllRoles() {
-        const queryString = ` SELECT * FROM roles;`
+        const queryString = ` SELECT * FROM role;`
         return this.connection.query(queryString);
     };
 
@@ -75,16 +79,16 @@ class ORM {
 
     // allows the user to add a department
     addDepartment(name) {
-        const queryString = `INSERT INTO department (name) VALUE ?`
+        const queryString = `INSERT INTO department (name) VALUE ?;`
 
         return this.connection.query(queryString, [name]);
     };
 
         // allows the user to add a department
-    addRole(title) {
-        const queryString = `INSERT INTO role (title) VALUE ?`
+    addRole(title, salary, departmentId) {
+        const queryString = `INSERT INTO role (title) VALUE (?, ?, ?);`
 
-        return this.connection.query(queryString, [title]);
+        return this.connection.query(queryString, [title, salary, departmentId]);
     }
 
 

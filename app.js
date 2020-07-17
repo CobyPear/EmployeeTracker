@@ -28,11 +28,11 @@ const orm = require("./config/orm");
 const connection = require("./config/connection");
 const inquirer = require("inquirer");
 const questions = require("./assets/questions");
-const { managerSwitcher } = require("./config/orm");
+// const { managerSwitcher } = require("./config/orm");
 // const { addEmployee } = require("./config/orm");
 
 
-
+// starts the program
 const init = () => {
 
     return inquirer.prompt(questions.main)
@@ -40,10 +40,16 @@ const init = () => {
 
             switch (main) {
                 case "View all employees":
-                    await renderAllEmployees(main);
+                    await renderAllEmployees();
                     break;
                 case "Add employee":
                     await addEmployee(main);
+                    break;
+                case "View all departments":
+                    await renderAllDepartments();
+                    break;
+                case "View all roles":
+                    await renderAllRoles();
                     break;
 
                 default: console.log("bleh");
@@ -59,13 +65,29 @@ const init = () => {
         .catch(err => err);
 };
 
-
-const renderAllEmployees = (answer) => {
+// renders all employees to the console
+const renderAllEmployees = () => {
     return orm.viewAllEmployee()
         .then(result => console.table(result))
         .catch(err => err)
         .then(init);
-}
+};
+
+// renders all departments to the console
+const renderAllDepartments = () => {
+    return orm.viewAllDepartments()
+    .then(result => console.table(result))
+    .catch(err => err)
+    .then(init);
+};
+
+// renders all roles to the console
+const renderAllRoles = (answer) => {
+    return orm.viewAllRoles()
+    .then(result => console.table(result))
+    .catch(err => err)
+    .then(init);
+};
 
 // asks the add employee prompts to insert a new employee into the database
 const addEmployee = (answer) => {
@@ -83,31 +105,25 @@ const addEmployee = (answer) => {
 
 };
 
+// takes in the role name, outputs the role's id
 const roleSwitch = (role) => {
     return orm.roleSwitcher(role)
         .then(res => res[0].id)
         .catch(err => err);
 };
 
+// takes in the manager name, outputs the manager's id
 const managerSwitch = (manager) => {
     return orm.managerSwitcher(manager)
         .then(res => res[0].id)
         .catch(err => err);
 };
 
-
-
-// inquierer prompts
-// what would you like to do? (list answer)
-/*
-view all employees - select needed
-view all employees by department- bonus
-view all employees by manager -bonus
-add employee
-update employee role
-update employee manager
-
- 
- */
+// takes in the department name, outputs the department id
+const deptSwitch = (dept) => {
+    return orm.deptSwitch(dept)
+    .then(res => res[0].id)
+    .catch(err => err);
+};
 
 init();
