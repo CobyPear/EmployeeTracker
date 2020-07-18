@@ -15,6 +15,6 @@ This command line application will help you manage your employees.
 
 # Future Development
 
-- view employees by manager
-- delete departments, roles, and employees
-- show overall budget by combining all salaries
+- ~view employees by manager~
+- ~delete departments, roles, and employees~
+- ~show overall budget by combining all salaries~

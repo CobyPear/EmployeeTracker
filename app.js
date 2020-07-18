@@ -23,6 +23,9 @@ const init = () => {
                 case "View all managers":
                     await renderAllManagers();
                     break;
+                case "View employees by manager":
+                    await renderEmployeesByManger();
+                    break;
                 case "View total utilized budget per department":
                     await renderTUB();
                     break;
@@ -79,6 +82,7 @@ const renderAllRoles = () => {
         .then(init);
 };
 
+// renders all managers
 const renderAllManagers = () => {
     return orm.viewManagers()
         .then(result => console.table(result))
@@ -86,6 +90,20 @@ const renderAllManagers = () => {
         .then(init);
 };
 
+const renderEmployeesByManger = async () => {
+    try {
+        const managers = await orm.viewManagersINQ();
+        const managerId = await inquirer.prompt(questions.viewEmployeesByManager(managers));
+        const result = await orm.viewEmployeeByManager(managerId.id)
+        console.table(result)
+        await init();
+        
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// renders total utilized budget
 const renderTUB = async () => {
     try {
         const dept = await orm.viewDepartmentINQ();
@@ -106,28 +124,33 @@ const addEmployee = async () => {
         const managers = await orm.viewManagersINQ();
         const roles = await orm.viewRolesINQ();
         const result = await inquirer.prompt(questions.addEmployee(roles, managers))
-        await orm.addEmployee(result.first_name, result.last_name, result.role_id, result.manage_id)
+        await orm.addEmployee(result.first_name, result.last_name, result.role_id, result.manager_id);
+        await console.log(`Succsess! Employee ${result.first_name} ${result.last_name} added.`);
         await init();
     } catch (error) {
         console.log(error.message);
     }
 };
 
+// allows the user to add a department
 const addDepartment = async () => {
     try {
         const result = await inquirer.prompt(questions.addDepartment);
         await orm.addDepartment(result.name);
+        await console.log(`Succsess! Department ${result.name} added.`);
         await init();
     } catch (error) {
         console.error(error.message);
     };
 };
 
+// allows the user to add a role
 const addRole = async () => {
     try {
         const dept = await orm.viewDepartmentINQ();
         const result = await inquirer.prompt(questions.addRole(dept));
         await orm.addRole(result.title, result.salary, result.department_id);
+        await console.log(`Succsess! Role ${result.title} added.`);
         await init();
         
     } catch (error) {
@@ -146,6 +169,7 @@ const updateEmployee = async () => {
         const managers = await orm.viewManagersINQ();
         const result = await inquirer.prompt(questions.updateEmployeeCont(firstName[0].first_name, lastName[0].last_name, roles, managers));
         await orm.updateEmployee(result.first_name, result.last_name, result.role_id, result.manager_id, result.is_manager, defaultNames.id);
+        await console.log(`Succsess! Employee ${result.first_name} ${result.last_name} updated.`);
         await init();
         
     } catch (error) {
@@ -158,6 +182,7 @@ const deleteEmployee = async () => {
         const employees = await orm.viewEmployeeINQ();
         const result = await inquirer.prompt(questions.deleteEmployee(employees));
         await orm.deleteEmployee(result.id);
+        await console.log(`Succsess! Employee deleted.`);
         await init();
     
     } catch (error) {
@@ -170,6 +195,7 @@ const deleteDepartment = async () => {
         const dept = await orm.viewDepartmentINQ();
         const result = await inquirer.prompt(questions.deleteDepartment(dept));
         await orm.deleteDepartment(result.id);
+        await console.log(`Succsess! Department deleted.`);
         await init();
     
     } catch (error) {
@@ -182,6 +208,7 @@ const deleteRole = async () => {
         const dept = await orm.viewRolesINQ();
         const result = await inquirer.prompt(questions.deleteRole(dept));
         await orm.deleteRole(result.id);
+        await console.log(`Succsess! Role deleted.`);
         await init();
     
     } catch (error) {

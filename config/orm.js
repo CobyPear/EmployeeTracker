@@ -19,13 +19,15 @@ class ORM {
 
     // allows the user to view all departments
     viewAllDepartments() {
-        const queryString = `SELECT name FROM department;`
+        const queryString = `SELECT * FROM department;`
         return this.connection.query(queryString);
     };
 
     // allows the user to view all roles
     viewAllRoles() {
-        const queryString = ` SELECT * FROM role;`
+        const queryString = ` SELECT title, salary, department.name
+        FROM role
+        INNER JOIN department ON role.department_id = department.id;`
         return this.connection.query(queryString);
     };
 
@@ -39,6 +41,11 @@ class ORM {
 
         return this.connection.query(queryString);
     };
+
+    viewEmployeeByManager(managerId) {
+        const queryString = "SELECT first_name, last_name FROM employee WHERE manager_id = ?"
+        return this.connection.query(queryString, [managerId]);
+    }
 
     // allows the user to add an employee
     addEmployee(first_name, last_name, role_id, manager_id) {
@@ -74,7 +81,7 @@ class ORM {
     };
 
     deleteDepartment(id) {
-        const queryString = "DELETE FROM department WHERE id = ?;"
+        const queryString = "DELETE FROM department WHERE department.id = ?;"
         return this.connection.query(queryString, [id]);
     };
 
@@ -89,7 +96,7 @@ class ORM {
         inner JOIN role ON role.department_id = department.id
         WHERE department.id = ?`
         return this.connection.query(queryString, [id]);
-    }
+    };
 
     // -----------------------------------------------------------------------------------
     // INQ methods (for inquierer prompt lists. shows the name, but returns value)

@@ -10,6 +10,7 @@ module.exports = {
             "View all departments",
             "View all roles",
             "View all managers",
+            "View employees by manager",
             "View total utilized budget per department",
             new inquirer.Separator(),
             "Add employee",
@@ -42,7 +43,7 @@ module.exports = {
             type: "list",
             name: "role_id",
             message: "What is the employee's role?",
-            choices: roles
+            choices: roles 
         },
         {
             type: "list",
@@ -160,15 +161,23 @@ module.exports = {
     ],
 
     totalUtilizedBudget: (dept) => [
+
         {
             type: "list",
             name: "id",
-            message: "For which department would you like to view the total utilized budget??",
+            message: "For which department would you like to view the total utilized budget?",
             choices: dept
         }
+    ],
+
+    viewEmployeesByManager: (manager) => [
+
+        {
+            type: "list",
+            name: "id",
+            message: "For which manager would you like to view employees?",
+            choices: manager
+        }
     ]
-
-
-    //TODO: BONUS: view employees by manager, delete departments, roles, and employees, combined salary
 
 };
