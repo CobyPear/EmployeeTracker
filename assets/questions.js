@@ -1,3 +1,5 @@
+const { updateEmployee } = require("../config/orm");
+
 module.exports = {
     main: {
         type: "list",
@@ -67,6 +69,40 @@ module.exports = {
             message: "To which department does this role belong?",
             choices: deptArr
         }
+    ],
+
+    updateEmployee: (employees, role, manager) => [
+
+        {
+            type: "list",
+            name: "id",
+            message: "Who would you like to update?",
+            choices: employees
+        },
+        {
+            type: "input",
+            name: "first_name",
+            message: "What is the employee's updated first name?",
+        },
+        {
+            type: "input",
+            name: "last_name",
+            message: "What is the employee's updated last name?"
+        },
+        {
+            type: "list",
+            name: "role_id",
+            message: "What is the employee's role?",
+            choices: roles
+        },
+        {
+            type: "list",
+            name: "manager_id",
+            message: "Who is the employee's manager?",
+            choices: managers
+
+        }
+
     ]
 
     //TODO: update employee roles, BONUS: view employees by manager, update employee manager, delete departments, roles, and employees, combined salary

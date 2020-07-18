@@ -25,7 +25,7 @@ class ORM {
     // returns table with all employess and all associated columns
     viewAllEmployee() {
 
-        const queryString = `SELECT employee.id, first_name, last_name, department.name, role.title, salary 
+        const queryString = `SELECT employee.id, first_name, last_name, department.name, role.title, salary, is_manager
         FROM employee 
         INNER JOIN role on employee.role_id = role.id 
         INNER JOIN department on role.department_id = department.id;`
@@ -85,7 +85,11 @@ class ORM {
     updateEmployee(first_name, last_name, role_id, is_manager, manager_id, id) {
         const queryString = "UPDATE employee SET first_name = ?, last_name = ?, role_id = ?, is_manager = ?, manager_id = ? WHERE id = ?;"
         return this.connection.query(queryString, [first_name, last_name, role_id, is_manager, manager_id, id]);
-    }
+    };
+
+    // employeeFirstName() {
+    //     const queryString = "SELECT first_name FROM employee WHERE"
+    // }
     
 };
 
