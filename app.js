@@ -114,24 +114,18 @@ const addDepartment = async () => {
     } catch (error) {
         console.error(error.message);
     };
-
-
-    // inquirer
-    //     .prompt(questions.addDepartment)
-    //     .then(async result => await orm.addDepartment(result.name))
-    //     .catch(err => err)
-    //     .then(init);
 };
 
-const addRole = () => {
-    inquirer
-        .prompt(questions.addRole)
-        .then(async result => {
-            let dept = await deptSwitch(result.department_id)
-            orm.addRole(result.title, result.salary, dept)
-        })
-        .catch(err => console.error(err))
-        .then(init);
+const addRole = async () => {
+    try {
+        const dept = await orm.viewDepartmentINQ();
+        const result = await inquirer.prompt(questions.addRole(dept));
+        await orm.addRole(result.title, result.salary, result.department_id);
+        await init();
+        
+    } catch (error) {
+        console.error(error.message);
+    };
 };
 
 init();
