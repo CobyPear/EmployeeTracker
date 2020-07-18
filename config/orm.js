@@ -22,31 +22,6 @@ class ORM {
         return questionMarks.join(', ');
     };
 
-    // create a method that returns role id, and accepts in the role name.
-    roleSwitcher(title) {
-        const queryString = `SELECT id FROM role WHERE title = ?`
-
-        return this.connection.query(queryString, [title]);
-
-    };
-
-    // create a method that returns employee id and accepts in the employee name.
-    // this is for inputting 
-    managerSwitcher(employee) {
-        const queryString = `SELECT id FROM employee WHERE first_name = ?`
-
-        return this.connection.query(queryString, [employee]);
-
-    };
-
-    // this method takes in a department name and returns it's id
-    deptSwitcher(name) {
-        const queryString = `SELECT id FROM department WHERE name = ?`
-
-        return this.connection.query(queryString, [name]);
-
-    };
-
     // returns table with all employess and all associated columns
     viewAllEmployee() {
 
@@ -57,39 +32,56 @@ class ORM {
         return this.connection.query(queryString);
     };
 
+    
+    
     // allows the user to view all departments
     viewAllDepartments() {
         const queryString = `SELECT * FROM department;`
         return this.connection.query(queryString);
     };
-
+    
     // allows the user to view all roles
     viewAllRoles() {
         const queryString = ` SELECT * FROM role;`
         return this.connection.query(queryString);
     };
-
+    
     // allows the user to add an employee
     addEmployee(first_name, last_name, role_id, manager_id) {
         const queryString = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUE (?, ?, ?, ?);`
-
+        
         return this.connection.query(queryString, [first_name, last_name, role_id, manager_id]);
     };
 
+    viewEmployeeINQ() {
+        const queryString = 'SELECT id as value, CONCAT(first_name, " ",last_name) as name FROM employee'
+        return this.connection.query(queryString);
+    };
+
+    viewDepartmentINQ() {
+        const queryString = "SELECT id as value, name FROM department"
+        return this.connection.query(queryString);
+    };
+    
     // allows the user to add a department
     addDepartment(name) {
         const queryString = `INSERT INTO department (name) VALUE (?);`
-
+        
         return this.connection.query(queryString, [name]);
     };
-
-        // allows the user to add a department
+    
+    // allows the user to add a department
     addRole(title, salary, departmentId) {
         const queryString = `INSERT INTO role (title, salary, department_id) VALUE (?, ?, ?);`
-
+        
         return this.connection.query(queryString, [title, salary, departmentId]);
     };
 
+    viewRolesINQ() {
+        const queryString = "SELECT id as value, title as name FROM role;"
+        return this.connection.query(queryString);
+    };
+    
 };
 
 module.exports = new ORM(connection)

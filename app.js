@@ -58,7 +58,9 @@ const init = () => {
                 case "Add role":
                     await addRole();
                     break;
-
+                case "Update employee":
+                    await updateEmployee();
+                    break;
 
                 default: console.log("bleh");
                     break;
@@ -92,25 +94,33 @@ const renderAllRoles = () => {
 };
 
 // asks the add employee prompts to insert a new employee into the database
-const addEmployee = () => {
-    inquirer
-        .prompt(questions.addEmployee)
-        .then(async result => {
-            let role = await roleSwitch(result.role_id)
-            let manager = await managerSwitch(result.manager_id.split(" ")[0])
-
-            orm.addEmployee(result.first_name, result.last_name, role, manager);
-        })
-        .catch(err => console.err(err))
-        .then(init);
+const addEmployee = async () => {
+    try {
+        const managers = await orm.viewEmployeeINQ();
+        const roles = await orm.viewRolesINQ();
+        const result = await inquirer.prompt(questions.addEmployee(roles, managers))
+        await orm.addEmployee(result.first_name, result.last_name, result.role_id, result.manage_id)
+        await init();
+    } catch (error) {
+        console.log(error.message);
+    }
 };
 
-const addDepartment = () => {
-    inquirer
-        .prompt(questions.addDepartment)
-        .then(async result => await orm.addDepartment(result.name))
-        .catch(err => err)
-        .then(init);
+const addDepartment = async () => {
+    try {
+        const result = await inquirer.prompt(questions.addDepartment);
+        await orm.addDepartment(result.name);
+        await init();
+    } catch (error) {
+        console.error(error.message);
+    };
+
+
+    // inquirer
+    //     .prompt(questions.addDepartment)
+    //     .then(async result => await orm.addDepartment(result.name))
+    //     .catch(err => err)
+    //     .then(init);
 };
 
 const addRole = () => {
@@ -122,27 +132,6 @@ const addRole = () => {
         })
         .catch(err => console.error(err))
         .then(init);
-};
-
-// takes in the role name, outputs the role's id
-const roleSwitch = (role) => {
-    return orm.roleSwitcher(role)
-        .then(res => res[0].id)
-        .catch(err => console.error(err));
-};
-
-// takes in the manager name, outputs the manager's id
-const managerSwitch = (manager) => {
-    return orm.managerSwitcher(manager)
-        .then(res => res[0].id)
-        .catch(err => console.error(err));
-};
-
-// takes in the department name, outputs the department id
-const deptSwitch = (dept) => {
-    return orm.deptSwitcher(dept)
-        .then(res => res[0].id)
-        .catch(err => console.error(err));
 };
 
 init();
