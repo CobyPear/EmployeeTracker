@@ -96,7 +96,7 @@ const renderAllRoles = () => {
         .then(init);
 };
 
-const renderAllManagers = async () => {
+const renderAllManagers = () => {
     return orm.viewManagers()
         .then(result => console.table(result))
         .catch(err => console.error(err))

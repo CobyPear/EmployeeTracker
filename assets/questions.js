@@ -117,6 +117,6 @@ module.exports = {
 
     ]
 
-    //TODO: update employee roles, BONUS: view employees by manager, update employee manager, delete departments, roles, and employees, combined salary
+    //TODO: BONUS: view employees by manager, delete departments, roles, and employees, combined salary
 
 };
