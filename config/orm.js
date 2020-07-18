@@ -87,6 +87,11 @@ class ORM {
         return this.connection.query(queryString, [first_name, last_name, role_id, is_manager, manager_id, id]);
     };
 
+    viewManagersINQ() {
+        const queryString = 'SELECT id as value, CONCAT(first_name, " ",last_name) as name FROM employee WHERE is_manager = 1;'
+        return this.connection.query(queryString);
+    }
+
     // employeeFirstName() {
     //     const queryString = "SELECT first_name FROM employee WHERE"
     // }
@@ -101,6 +106,10 @@ module.exports = new ORM(connection)
 
 // test
 const test = new ORM(connection);
+
+// test.viewManagersINQ()
+// .then(res => console.table(res))
+// .catch(err=> console.error(err))
 
 // test.updateEmployee("Anna", "Spitz", 3, 1, null, 13)
 // .then(res => {

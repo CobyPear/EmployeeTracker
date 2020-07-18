@@ -96,7 +96,7 @@ const renderAllRoles = () => {
 // asks the add employee prompts to insert a new employee into the database
 const addEmployee = async () => {
     try {
-        const managers = await orm.viewEmployeeINQ();
+        const managers = await orm.viewManagersINQ();
         const roles = await orm.viewRolesINQ();
         const result = await inquirer.prompt(questions.addEmployee(roles, managers))
         await orm.addEmployee(result.first_name, result.last_name, result.role_id, result.manage_id)
@@ -129,7 +129,14 @@ const addRole = async () => {
 };
 
 const updateEmployee = () => {
-    
+    try {
+        const employees = await orm.viewManagersINQ()
+        const roles = await orm.viewRolesINQ();
+        const managers = await orm.viewEmployeeINQ();
+        
+    } catch (error) {
+        console.error(errror.message);
+    }
 }
 
 init();

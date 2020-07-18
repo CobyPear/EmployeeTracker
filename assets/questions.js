@@ -71,7 +71,7 @@ module.exports = {
         }
     ],
 
-    updateEmployee: (employees, role, manager) => [
+    updateEmployee: (employees, roles, managers) => [
 
         {
             type: "list",
