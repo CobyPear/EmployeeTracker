@@ -7,21 +7,6 @@ class ORM {
         this.connection = connection;
     };
 
-    // Helper function for SQL syntax.
-    // Let's say we want to pass 3 values into the mySQL query.
-    // In order to write the query, we need 3 question marks.
-    // This helper function loops through and creates an array of question marks - ["?", "?", "?"] - and turns it into a string.
-    // ["?", "?", "?"].join(', ') => "?, ?, ?";
-    printQuestionMarks(numberOfValues) {
-        const questionMarks = [];
-
-        for (var i = 0; i < numberOfValues; i++) {
-            questionMarks.push("?");
-        }
-
-        return questionMarks.join(', ');
-    };
-
     // returns table with all employess and all associated columns
     viewAllEmployee() {
 
@@ -32,20 +17,19 @@ class ORM {
         return this.connection.query(queryString);
     };
 
-    
-    
     // allows the user to view all departments
     viewAllDepartments() {
         const queryString = `SELECT * FROM department;`
         return this.connection.query(queryString);
     };
-    
+
     // allows the user to view all roles
     viewAllRoles() {
         const queryString = ` SELECT * FROM role;`
         return this.connection.query(queryString);
     };
 
+    // allows the user to view all managers
     viewManagers() {
         const queryString = `SELECT first_name, last_name, role.title, department.name, salary 
         FROM employee 
@@ -55,63 +39,79 @@ class ORM {
 
         return this.connection.query(queryString);
     };
-    
+
     // allows the user to add an employee
     addEmployee(first_name, last_name, role_id, manager_id) {
         const queryString = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUE (?, ?, ?, ?);`
-        
+
         return this.connection.query(queryString, [first_name, last_name, role_id, manager_id]);
     };
 
-    viewEmployeeINQ() {
-        const queryString = 'SELECT id as value, CONCAT(first_name, " ",last_name) as name FROM employee'
-        return this.connection.query(queryString);
-    };
 
-    viewDepartmentINQ() {
-        const queryString = "SELECT id as value, name FROM department"
-        return this.connection.query(queryString);
-    };
-    
     // allows the user to add a department
     addDepartment(name) {
         const queryString = `INSERT INTO department (name) VALUE (?);`
-        
+
         return this.connection.query(queryString, [name]);
     };
-    
+
     // allows the user to add a department
     addRole(title, salary, departmentId) {
         const queryString = `INSERT INTO role (title, salary, department_id) VALUE (?, ?, ?);`
-        
+
         return this.connection.query(queryString, [title, salary, departmentId]);
     };
 
-    viewRolesINQ() {
-        const queryString = "SELECT id as value, title as name FROM role;"
-        return this.connection.query(queryString);
-    };
-
+    // allows the user to update an employee
     updateEmployee(first_name, last_name, role_id, is_manager, manager_id, id) {
         const queryString = "UPDATE employee SET first_name = ?, last_name = ?, role_id = ?, is_manager = ?, manager_id = ? WHERE id = ?;"
         return this.connection.query(queryString, [first_name, last_name, role_id, is_manager, manager_id, id]);
     };
 
+    deleteEmployee(id) {
+        const queryString = "DELETE FROM employee WHERE id = ?;"
+        return this.connection.query(queryString, [id]);
+    }
+
+    // -----------------------------------------------------------------------------------
+    // INQ methods (for inquierer prompt lists. shows the name, but returns value)
+
+    // this method lets the user see the names of employees, but returns the employee id
+    viewEmployeeINQ() {
+        const queryString = 'SELECT id as value, CONCAT(first_name, " ",last_name) as name FROM employee'
+        return this.connection.query(queryString);
+    };
+
+    // this method lets the user see the names of departments, but returns department id
+    viewDepartmentINQ() {
+        const queryString = "SELECT id as value, name FROM department"
+        return this.connection.query(queryString);
+    };
+
+    // this method lets the user see the names of roles, but returns role id
+    viewRolesINQ() {
+        const queryString = "SELECT id as value, title as name FROM role;"
+        return this.connection.query(queryString);
+    };
+
+    // this mehtod lets the user see the names of the managers, but returns manager id
     viewManagersINQ() {
         const queryString = 'SELECT id as value, CONCAT(first_name, " ",last_name) as name FROM employee WHERE is_manager = 1;'
         return this.connection.query(queryString);
     };
 
+    // this method is for grabbing the first name of an employee to populate the default field in the update employee question
     employeeFirstNameINQ(id) {
         const queryString = "SELECT first_name FROM employee WHERE id = ?"
         return this.connection.query(queryString, [id]);
     };
 
+    // this method is for grabbing the last name of an employee to populate the default field in the update employee question
     employeeLastNameINQ(id) {
         const queryString = "SELECT last_name FROM employee WHERE id = ?"
         return this.connection.query(queryString, [id]);
     };
-        
+
 };
 
 module.exports = new ORM(connection)
@@ -122,6 +122,11 @@ module.exports = new ORM(connection)
 
 // test
 const test = new ORM(connection);
+
+// test.deleteEmployee(9)
+// .then(res => console.log(res))
+// .catch(error=> console.error(error.message))
+
 
 // test.viewManagersINQ()
 // .then(res => console.table(res))

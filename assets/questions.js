@@ -115,6 +115,17 @@ module.exports = {
 
         }
 
+    ],
+
+    deleteEmployee: (employees) => [
+
+        {
+            type: "list",
+            name: "id",
+            message: "Which employee would you like to delete?",
+            choices: employees
+        }
+
     ]
 
     //TODO: BONUS: view employees by manager, delete departments, roles, and employees, combined salary
