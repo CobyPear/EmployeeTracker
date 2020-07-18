@@ -128,4 +128,8 @@ const addRole = async () => {
     };
 };
 
+const updateEmployee = () => {
+    
+}
+
 init();

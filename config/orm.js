@@ -81,6 +81,11 @@ class ORM {
         const queryString = "SELECT id as value, title as name FROM role;"
         return this.connection.query(queryString);
     };
+
+    updateEmployee(first_name, last_name, role_id, is_manager, manager_id, id) {
+        const queryString = "UPDATE employee SET first_name = ?, last_name = ?, role_id = ?, is_manager = ?, manager_id = ? WHERE id = ?;"
+        return this.connection.query(queryString, [first_name, last_name, role_id, is_manager, manager_id, id]);
+    }
     
 };
 
@@ -92,6 +97,13 @@ module.exports = new ORM(connection)
 
 // test
 const test = new ORM(connection);
+
+// test.updateEmployee("Anna", "Spitz", 3, 1, null, 13)
+// .then(res => {
+//     console.log(res)
+// })
+// .then(connection.end())
+// .catch(err => console.error(err))
 
 // test.deptSwitcher("Crew")
 // .then(res => {
