@@ -90,11 +90,12 @@ class ORM {
     viewManagersINQ() {
         const queryString = 'SELECT id as value, CONCAT(first_name, " ",last_name) as name FROM employee WHERE is_manager = 1;'
         return this.connection.query(queryString);
-    }
+    };
 
-    // employeeFirstName() {
-    //     const queryString = "SELECT first_name FROM employee WHERE"
-    // }
+    employeeFirstName(id) {
+        const queryString = "SELECT first_name FROM employee WHERE id = ?"
+        return this.connection.query(queryString, [id]);
+    };
     
 };
 

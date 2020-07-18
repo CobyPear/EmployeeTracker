@@ -130,9 +130,9 @@ const addRole = async () => {
 
 const updateEmployee = () => {
     try {
-        const employees = await orm.viewManagersINQ()
+        const employees = await orm.viewEmployeeINQ();
         const roles = await orm.viewRolesINQ();
-        const managers = await orm.viewEmployeeINQ();
+        const managers = await orm.viewManagersINQ();
         
     } catch (error) {
         console.error(errror.message);
