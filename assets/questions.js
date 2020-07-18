@@ -51,6 +51,11 @@ module.exports = {
             message: "Who is the employee's manager?",
             choices: managers
 
+        },
+        {
+            type: "confirm",
+            name: "is_manager",
+            message: "Is this employee a manager?"
         }
 
     ],

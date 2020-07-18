@@ -48,10 +48,10 @@ class ORM {
     }
 
     // allows the user to add an employee
-    addEmployee(first_name, last_name, role_id, manager_id) {
-        const queryString = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUE (?, ?, ?, ?);`
+    addEmployee(first_name, last_name, role_id, manager_id, is_manager) {
+        const queryString = `INSERT INTO employee (first_name, last_name, role_id, manager_id, is_manager) VALUE (?, ?, ?, ?, ?);`
 
-        return this.connection.query(queryString, [first_name, last_name, role_id, manager_id]);
+        return this.connection.query(queryString, [first_name, last_name, role_id, manager_id, is_manager]);
     };
 
 
@@ -72,7 +72,7 @@ class ORM {
     // allows the user to update an employee
     updateEmployee(first_name, last_name, role_id, is_manager, manager_id, id) {
         const queryString = "UPDATE employee SET first_name = ?, last_name = ?, role_id = ?, is_manager = ?, manager_id = ? WHERE id = ?;"
-        return this.connection.query(queryString, [first_name, last_name, role_id, is_manager, manager_id, id]);
+        return this.connection.query(queryString, [first_name, last_name, role_id, manager_id, is_manager, id]);
     };
 
     deleteEmployee(id) {

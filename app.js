@@ -124,7 +124,7 @@ const addEmployee = async () => {
         const managers = await orm.viewManagersINQ();
         const roles = await orm.viewRolesINQ();
         const result = await inquirer.prompt(questions.addEmployee(roles, managers))
-        await orm.addEmployee(result.first_name, result.last_name, result.role_id, result.manager_id);
+        await orm.addEmployee(result.first_name, result.last_name, result.role_id, result.manager_id, result.is_manager);
         await console.log(`Succsess! Employee ${result.first_name} ${result.last_name} added.`);
         await init();
     } catch (error) {

@@ -6,8 +6,12 @@ This command line application will help you manage your employees.
 - view all departments
 - view all roles
 - view all managers
+- view employees by manager
 - add an employee, department, or role
 - update an employee
+- view total utilized budget per departmnet
+- delete employees, departments, and roles
+
 
 # Demo video
 
