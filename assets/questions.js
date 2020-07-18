@@ -71,24 +71,27 @@ module.exports = {
         }
     ],
 
-    updateEmployee: (first_name, last_name, employees, roles, managers) => [
-
+    updateEmployee: (employees) => [
         {
             type: "list",
             name: "id",
             message: "Who would you like to update?",
             choices: employees
-        },
+        }
+    ],
+
+    updateEmployeeCont: (firstName, lastName, roles, managers) => [
+
         {
             type: "input",
             name: "first_name",
-            default: first_name,
+            default: firstName,
             message: "What is the employee's updated first name?",
         },
         {
             type: "input",
             name: "last_name",
-            default: last_name,
+            default: lastName,
             message: "What is the employee's updated last name?"
         },
         {
@@ -102,6 +105,12 @@ module.exports = {
             name: "manager_id",
             message: "Who is the employee's updated manager?",
             choices: managers
+
+        },
+        {
+            type: "confirm",
+            name: "is_manager",
+            message: "Is this employee a manager?"
 
         }
 

@@ -128,14 +128,21 @@ const addRole = async () => {
     };
 };
 
-const updateEmployee = () => {
+const updateEmployee = async () => {
     try {
         const employees = await orm.viewEmployeeINQ();
+        const defaultNames = await inquirer.prompt(questions.updateEmployee(employees
+            ));
+        const firstName = await orm.employeeFirstNameINQ(defaultNames.id);
+        const lastName = await orm.employeeLastNameINQ(defaultNames.id);
         const roles = await orm.viewRolesINQ();
         const managers = await orm.viewManagersINQ();
+        const result = await inquirer.prompt(questions.updateEmployeeCont(firstName[0].first_name, lastName[0].last_name, roles, managers));
+        await orm.updateEmployee(result.first_name, result.last_name, result.role_id, result.manager_id, result.is_manager, defaultNames.id);
+        await init();
         
     } catch (error) {
-        console.error(errror.message);
+        console.error(error.message);
     }
 }
 

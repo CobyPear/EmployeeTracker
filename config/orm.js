@@ -92,11 +92,16 @@ class ORM {
         return this.connection.query(queryString);
     };
 
-    employeeFirstName(id) {
+    employeeFirstNameINQ(id) {
         const queryString = "SELECT first_name FROM employee WHERE id = ?"
         return this.connection.query(queryString, [id]);
     };
-    
+
+    employeeLastNameINQ(id) {
+        const queryString = "SELECT last_name FROM employee WHERE id = ?"
+        return this.connection.query(queryString, [id]);
+    };
+        
 };
 
 module.exports = new ORM(connection)
