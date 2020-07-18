@@ -23,6 +23,9 @@ const init = () => {
                 case "View all managers":
                     await renderAllManagers();
                     break;
+                case "View total utilized budget per department":
+                    await renderTUB();
+                    break;
                 case "Add employee":
                     await addEmployee();
                     break;
@@ -81,6 +84,19 @@ const renderAllManagers = () => {
         .then(result => console.table(result))
         .catch(err => console.error(err))
         .then(init);
+};
+
+const renderTUB = async () => {
+    try {
+        const dept = await orm.viewDepartmentINQ();
+        const deptId = await inquirer.prompt(questions.totalUtilizedBudget(dept));
+        const result = await orm.totalUtilizedBudget(deptId.id);
+        console.table(result)
+        await init();
+        
+    } catch (error) {
+        console.error(error);
+    }
 };
 
 

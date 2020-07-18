@@ -83,6 +83,14 @@ class ORM {
         return this.connection.query(queryString, [id]);
     };
 
+    totalUtilizedBudget(id) {
+        const queryString = `SELECT department.name, SUM(salary)
+        FROM department
+        inner JOIN role ON role.department_id = department.id
+        WHERE department.id = ?`
+        return this.connection.query(queryString, [id]);
+    }
+
     // -----------------------------------------------------------------------------------
     // INQ methods (for inquierer prompt lists. shows the name, but returns value)
 
@@ -132,6 +140,10 @@ module.exports = new ORM(connection)
 
 // test
 const test = new ORM(connection);
+
+// test.totalUtilizedBudget(3)
+// .then(res => console.log(res))
+// .catch(error=> console.error(error.message))
 
 // test.deleteEmployee(9)
 // .then(res => console.log(res))
