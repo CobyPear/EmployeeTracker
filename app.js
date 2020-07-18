@@ -38,6 +38,9 @@ const init = () => {
                 case "Delete employee":
                     await deleteEmployee();
                     break;
+                case "Delete department":
+                    await deleteDepartment();
+                    break;
 
                 default: console.log("bleh");
                     break;
@@ -136,6 +139,19 @@ const deleteEmployee = async () => {
         const employees = await orm.viewEmployeeINQ();
         const result = await inquirer.prompt(questions.deleteEmployee(employees));
         await orm.deleteEmployee(result.id);
+        await init();
+    
+    } catch (error) {
+        console.error(error.message)
+    };
+};
+
+const deleteDepartment = async () => {
+    try {
+        const dept = await orm.viewDepartmentINQ();
+        const result = await inquirer.prompt(questions.deleteDepartment(dept));
+        console.log(result)
+        await orm.deleteDepartment(result.id);
         await init();
     
     } catch (error) {

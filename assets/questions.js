@@ -1,4 +1,4 @@
-const { updateEmployee } = require("../config/orm");
+const inquirer = require("inquirer");
 
 module.exports = {
     main: {
@@ -10,11 +10,15 @@ module.exports = {
             "View all departments",
             "View all roles",
             "View all managers",
+            new inquirer.Separator(),
             "Add employee",
             "Add department",
             "Add role",
+            new inquirer.Separator(),
             "Update employee",
-            "Delete employee"
+            "Delete employee",
+            "Delete department",
+            new inquirer.Separator()
 
         ]
     },
@@ -53,7 +57,7 @@ module.exports = {
         message: "What is the name of the new department?"
     },
 
-    addRole: (deptArr) => [
+    addRole: (dept) => [
 
         {
             type: "input",
@@ -69,7 +73,7 @@ module.exports = {
             type: "list",
             name: "department_id",
             message: "To which department does this role belong?",
-            choices: deptArr
+            choices: dept
         }
     ],
 
@@ -125,6 +129,17 @@ module.exports = {
             name: "id",
             message: "Which employee would you like to delete?",
             choices: employees
+        }
+
+    ],
+
+    deleteDepartment: (dept) => [
+
+        {
+            type: "list",
+            name: "id",
+            message: "Which department would you like to delete?",
+            choices: dept
         }
 
     ]

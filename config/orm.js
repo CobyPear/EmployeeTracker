@@ -19,7 +19,7 @@ class ORM {
 
     // allows the user to view all departments
     viewAllDepartments() {
-        const queryString = `SELECT * FROM department;`
+        const queryString = `SELECT name FROM department;`
         return this.connection.query(queryString);
     };
 
@@ -71,7 +71,12 @@ class ORM {
     deleteEmployee(id) {
         const queryString = "DELETE FROM employee WHERE id = ?;"
         return this.connection.query(queryString, [id]);
-    }
+    };
+
+    deleteDepartment(id) {
+        const queryString = "DELETE FROM department WHERE id = ?;"
+        return this.connection.query(queryString, [id]);
+    };
 
     // -----------------------------------------------------------------------------------
     // INQ methods (for inquierer prompt lists. shows the name, but returns value)
