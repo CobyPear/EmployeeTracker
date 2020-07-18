@@ -49,6 +49,9 @@ const init = () => {
                 case "View all roles":
                     await renderAllRoles();
                     break;
+                case "View all managers":
+                    await renderAllManagers();
+                    break;
                 case "Add employee":
                     await addEmployee();
                     break;
@@ -92,6 +95,14 @@ const renderAllRoles = () => {
         .catch(err => console.error(err))
         .then(init);
 };
+
+const renderAllManagers = async () => {
+    return orm.viewManagers()
+        .then(result => console.table(result))
+        .catch(err => console.error(err))
+        .then(init);
+};
+
 
 // asks the add employee prompts to insert a new employee into the database
 const addEmployee = async () => {
@@ -143,7 +154,7 @@ const updateEmployee = async () => {
         
     } catch (error) {
         console.error(error.message);
-    }
-}
+    };
+};
 
 init();

@@ -45,6 +45,16 @@ class ORM {
         const queryString = ` SELECT * FROM role;`
         return this.connection.query(queryString);
     };
+
+    viewManagers() {
+        const queryString = `SELECT first_name, last_name, role.title, department.name, salary 
+        FROM employee 
+        INNER JOIN role on employee.role_id = role.id 
+        INNER JOIN department on role.department_id = department.id  
+        WHERE is_manager = 1;`
+
+        return this.connection.query(queryString);
+    };
     
     // allows the user to add an employee
     addEmployee(first_name, last_name, role_id, manager_id) {

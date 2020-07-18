@@ -9,6 +9,7 @@ module.exports = {
             "View all employees",
             "View all departments",
             "View all roles",
+            "View all managers",
             "Add employee",
             "Add department",
             "Add role",
