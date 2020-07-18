@@ -78,6 +78,11 @@ class ORM {
         return this.connection.query(queryString, [id]);
     };
 
+    deleteRole(id) {
+        const queryString = "DELETE FROM role WHERE id = ?;"
+        return this.connection.query(queryString, [id]);
+    };
+
     // -----------------------------------------------------------------------------------
     // INQ methods (for inquierer prompt lists. shows the name, but returns value)
 

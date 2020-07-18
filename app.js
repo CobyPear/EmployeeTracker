@@ -41,6 +41,9 @@ const init = () => {
                 case "Delete department":
                     await deleteDepartment();
                     break;
+                case "Delete role":
+                    await deleteRole();
+                    break;
 
                 default: console.log("bleh");
                     break;
@@ -150,8 +153,19 @@ const deleteDepartment = async () => {
     try {
         const dept = await orm.viewDepartmentINQ();
         const result = await inquirer.prompt(questions.deleteDepartment(dept));
-        console.log(result)
         await orm.deleteDepartment(result.id);
+        await init();
+    
+    } catch (error) {
+        console.error(error.message)
+    };
+};
+
+const deleteRole = async () => {
+    try {
+        const dept = await orm.viewRolesINQ();
+        const result = await inquirer.prompt(questions.deleteRole(dept));
+        await orm.deleteRole(result.id);
         await init();
     
     } catch (error) {

@@ -16,8 +16,10 @@ module.exports = {
             "Add role",
             new inquirer.Separator(),
             "Update employee",
+            new inquirer.Separator(),
             "Delete employee",
             "Delete department",
+            "Delete role",
             new inquirer.Separator()
 
         ]
@@ -142,7 +144,18 @@ module.exports = {
             choices: dept
         }
 
-    ]
+    ],
+
+    deleteRole: (roles) => [
+
+        {
+            type: "list",
+            name: "id",
+            message: "Which role would you like to delete?",
+            choices: roles
+        }
+
+    ],
 
     //TODO: BONUS: view employees by manager, delete departments, roles, and employees, combined salary
 
