@@ -1,36 +1,7 @@
-/*
- Build a command-line application that at a minimum allows the user to:
-
-  * Add departments, roles, employees -C
-
-  * View departments, roles, employees- R
-
-  * Update employee roles - U
-
-  Bonus points if you're able to:
-
-  * Update employee managers
-
-  * View employees by manager
-
-  * Delete departments, roles, and employees
-
-  * View the total utilized budget of a department -- ie the combined salaries of all employees in that department
-
-  user story:
-  As a business owner
-    I want to be able to view and manage the departments, roles, and employees in my company
-    So that I can organize and plan my business
-
- */
 const cTable = require("console.table");
 const orm = require("./config/orm");
-const connection = require("./config/connection");
 const inquirer = require("inquirer");
 const questions = require("./assets/questions");
-// const { addDepartment } = require("./config/orm");
-// const { managerSwitcher } = require("./config/orm");
-// const { addEmployee } = require("./config/orm");
 
 
 // starts the program
@@ -63,6 +34,9 @@ const init = () => {
                     break;
                 case "Update employee":
                     await updateEmployee();
+                    break;
+                case "Delete employee":
+                    await deleteEmployee();
                     break;
 
                 default: console.log("bleh");
@@ -154,6 +128,18 @@ const updateEmployee = async () => {
         
     } catch (error) {
         console.error(error.message);
+    };
+};
+
+const deleteEmployee = async () => {
+    try {
+        const employees = await orm.viewEmployeeINQ();
+        const result = await inquirer.prompt(questions.deleteEmployee(employees));
+        await orm.deleteEmployee(result.id);
+        await init();
+    
+    } catch (error) {
+        console.error(error.message)
     };
 };
 

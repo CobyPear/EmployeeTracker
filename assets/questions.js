@@ -13,7 +13,8 @@ module.exports = {
             "Add employee",
             "Add department",
             "Add role",
-            "Update employee"
+            "Update employee",
+            "Delete employee"
 
         ]
     },
