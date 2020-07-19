@@ -146,7 +146,7 @@ module.exports = new ORM(connection)
 // ---------------------------------------------------------
 
 // test
-const test = new ORM(connection);
+// const test = new ORM(connection);
 
 // test.totalUtilizedBudget(3)
 // .then(res => console.log(res))

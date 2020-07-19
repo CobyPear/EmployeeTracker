@@ -1,13 +1,21 @@
 // Set up MySQL connection.
 const mysql = require("mysql");
 const util = require('util');
+require('dotenv').config()
+// enviromental variables
+const PORT = process.env.PORT
+const USER = process.env.USER
+const PASS = process.env.PASS
+const HOST = process.env.HOST
+const DB = process.env.DB
+
 
 const connection = mysql.createConnection({
-  host: "localhost",
-  port: 3306,
-  user: "root",
-  password: "mclorfinTWELVE20",
-  database: "employee_cms_db"
+  host: HOST,
+  port: PORT,
+  user: USER,
+  password: PASS,
+  database: DB
 });
 
 // Make connection.
